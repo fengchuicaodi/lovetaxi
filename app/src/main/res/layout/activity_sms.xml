@@ -55,7 +55,7 @@
         android:layout_alignBottom="@+id/textView3"
         android:layout_alignLeft="@+id/phone"
         android:ems="4"
-        android:maxLength="4"
+        android:maxLength="6"
         android:inputType="phone" />
 
     <Button
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/cord"
         android:layout_margin="20dp"
-        android:text="登录" />
+        android:text="验证" />
 
     <TextView
         android:id="@+id/now"

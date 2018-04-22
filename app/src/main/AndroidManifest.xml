@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.by.taxi.lovetaxi">
 
-    <!--允许程序访问WiFi网络信息-->
+    <!-- 允许程序访问WiFi网络信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
+    <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 允许联网 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -31,7 +31,10 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="a7d05ff790fa8178db0e613ab9cf1d88"/>
+            android:value="a7d05ff790fa8178db0e613ab9cf1d88" />
+
+        <service android:name="com.amap.api.location.APSService" />
+
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,7 +47,8 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".MainActivity" />
         <activity android:name=".registerActivity" />
-        <activity android:name=".SmsActivity"></activity>
+        <activity android:name=".SmsActivity" />
+        <activity android:name=".javabean.PersonActivity"></activity>
     </application>
 
 </manifest>
