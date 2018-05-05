@@ -1,17 +1,20 @@
 package com.by.taxi.lovetaxi;
 
 import android.app.Activity;
-import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.graphics.drawable.AnimationDrawable;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -20,12 +23,34 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.by.taxi.lovetaxi.R;
+import com.by.taxi.lovetaxi.javabean.MyUser;
+import com.by.taxi.lovetaxi.javabean.ordercar;
+import com.by.taxi.lovetaxi.javabean.passenger_location;
 
-import java.util.Map;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.widget.Toast;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class MainActivity extends AppCompatActivity implements LocationSource, AMapLocationListener {
+    private Toolbar toolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private ListView lvLeftMenu;
+    private String[] lvs = {"登录注册","个人信息", "提交预约", "查询订单", "附近的车","修改密码"};
+    private ArrayAdapter arrayAdapter;
+    private AnimationDrawable mAnimationDrawable;
+    private static boolean flag=true;
+    //经纬度
+    private  double latitude;//经度
+    private  double longitude;//纬度
+
 
     MapView mMapView = null;
 
@@ -45,10 +70,56 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null){
-            actionBar.hide();
+        Bmob.initialize(this, "64a9582a1950cfc5eac1b65afb3b11e2");
+        findViews(); //获取控件
+        if(flag==true){
+            update();
         }
+        toolbar.setTitle("Toolbar");//设置Toolbar标题
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //创建返回键，并实现打开关/闭监听
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+        mDrawerToggle.syncState();
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        //设置菜单列表
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lvs);
+        lvLeftMenu.setAdapter(arrayAdapter);
+        lvLeftMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+                    case 0:
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        Intent intent1 = new Intent(MainActivity.this, PersonActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case 2:
+                        Intent intent2 = new Intent(MainActivity.this, OrderActivity.class);
+                        startActivity(intent2);
+                        break;
+                    case 5:
+                        Intent intent5 = new Intent(MainActivity.this, PasswordActivity.class);
+                        startActivity(intent5);
+                        break;
+                }
+            }
+        });
+
         //获取地图控件引用
         mMapView = (MapView) findViewById(R.id.map);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
@@ -57,14 +128,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
             aMap = mMapView.getMap();
 
         }
-        //设置地图的放缩级别
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(12));
-        // 设置定位监听
-        aMap.setLocationSource(this);
-        // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        aMap.setMyLocationEnabled(true);
-        // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
-        aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
 
 
         //蓝点初始化
@@ -78,12 +141,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
 
         myLocationStyle.showMyLocation(true);
 
-        aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
-            @Override
-            public void onMyLocationChange(Location location) {
-                //从location对象中获取经纬度信息，地址描述信息，建议拿到位置之后调用逆地理编码接口获取
-            }
-        });
+
+
     }
 
 
@@ -158,6 +217,10 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         if (mListener != null && aMapLocation != null) {
             if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
+                latitude=aMapLocation.getLatitude();
+                longitude=aMapLocation.getLongitude();
+                String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
+                Log.e("定位AmapErr", errText);
 
             } else {
                 String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
@@ -174,5 +237,27 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         if (null != mlocationClient) {
             mlocationClient.onDestroy();
         }
+    }
+    private void findViews() {
+        toolbar = (Toolbar) findViewById(R.id.tl_custom);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
+        lvLeftMenu = (ListView) findViewById(R.id.lv_left_menu);
+    }
+    private void update(){
+        MyUser user = BmobUser.getCurrentUser(MyUser.class);
+        passenger_location plocation=new passenger_location();
+        plocation.setPl_status(0);
+        plocation.setPassengername(user);
+        plocation.save(new SaveListener<String>() {
+            @Override
+            public void done(String objectId,BmobException e) {
+                if(e==null){
+                    Log.e("bmob","保存成功");
+                }else{
+                    Log.e("bmob","保存失败："+e.getMessage());
+                }
+            }
+        });
+        flag=false;
     }
 }

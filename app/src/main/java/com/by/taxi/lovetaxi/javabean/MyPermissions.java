@@ -1,6 +1,8 @@
 package com.by.taxi.lovetaxi.javabean;
 
-
+/**
+ * Created by 风吹草地 on 2018/4/27.
+ */
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;

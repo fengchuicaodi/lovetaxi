@@ -1,24 +1,17 @@
 package com.by.taxi.lovetaxi;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.provider.Telephony;
-import android.text.InputType;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.widget.Toast;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.by.taxi.lovetaxi.javabean.MyPermissions;
 import com.by.taxi.lovetaxi.javabean.MyUser;
@@ -26,7 +19,6 @@ import com.by.taxi.lovetaxi.javabean.MyUser;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.SaveListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -47,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         //这里的AppLication ID 写上自己创建项目得到的那个AppLication ID
-        Bmob.initialize(this, "64a9582a1950cfc5eac1b65afb3b11e2","bmob");
+        Bmob.initialize(this, "64a9582a1950cfc5eac1b65afb3b11e2");
         initialize();
         initView();
     }
@@ -57,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     //初始化
     private void initialize() {
-        String[] str=new String[]{"Manifest.permission.READ_PHONE_STATE","Manifest.permission.READ_PROFILE"};
+        String[] str=new String[]{"Manifest.permission.WRITE_EXTERNAL_STORAG","Manifest.permission.CHANGE_WIFI_STATE","Manifest.permission.READ_PHONE_STATE","Manifest.permission.READ_PROFILE","Manifest.permissionpermission.CHANGE_WIFI_STATE"};
         MyPermissions permission =new MyPermissions(this,this);
         permission.requestPermission(str);
 
@@ -94,9 +86,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.login:
                 String username = etusername.getText().toString();
                 String password = etpassword.getText().toString();
-
                 if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
-                    BmobUser bu2 = new BmobUser();
+                    BmobUser bu2 = new MyUser();
                     bu2.setUsername(username);
                     bu2.setPassword(password);
                     bu2.login(new SaveListener<BmobUser>() {
@@ -109,11 +100,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 startActivity(intent1);
                             }else{
                                 Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
-                                //loge(e);
+                               e.getStackTrace();
                             }
                         }
                     });
-
                 }
                 break;
             case R.id.login_error:

@@ -4,7 +4,7 @@
         <item>发布订单</item>
         <item>查询订单</item>
         <item>取消订单</item>
-        <item>司机位置</item>
+        <item>附近的车</item>
     </string-array>
 
 </resources>

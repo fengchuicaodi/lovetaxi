@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- 首先定义标题栏 -->
+    <RelativeLayout
+        android:id="@+id/biaoti"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="#ed4255">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="个人信息"
+            android:textColor="#fff"
+            android:textSize="21sp" />
+
+        <Button
+            android:id="@+id/button_backward"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#ed4255"
+            android:drawableLeft="@drawable/back_arrow"
+            android:drawablePadding="6dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:text="返回"
+            android:textColor="#ffffffff"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/button_revise"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="#ed4255"
+            android:drawablePadding="6dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:text="修改"
+            android:textColor="#ffffffff"
+            android:textSize="18dp" />
+    </RelativeLayout>
+</RelativeLayout>

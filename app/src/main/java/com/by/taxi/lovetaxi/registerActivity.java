@@ -46,7 +46,7 @@ public class registerActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         //这里的AppLication ID 写上自己创建项目得到的那个AppLication ID
-        Bmob.initialize(this, "64a9582a1950cfc5eac1b65afb3b11e2","bmob");
+        Bmob.initialize(this, "64a9582a1950cfc5eac1b65afb3b11e2");
         initialize();
     }
 

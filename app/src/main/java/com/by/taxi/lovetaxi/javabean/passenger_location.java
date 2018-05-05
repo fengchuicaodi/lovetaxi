@@ -13,6 +13,15 @@ public class passenger_location extends BmobObject {
     private BmobGeoPoint pl_location;
     private MyUser passengername;
 
+    public MyUser getPassengername() {
+        return passengername;
+    }
+
+    public void setPassengername(MyUser passengername) {
+        this.passengername = passengername;
+    }
+
+
     public Integer getPl_rid() {
         return pl_rid;
     }
