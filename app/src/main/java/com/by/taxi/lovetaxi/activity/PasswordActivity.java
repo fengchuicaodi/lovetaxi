@@ -1,4 +1,4 @@
-package com.by.taxi.lovetaxi;
+package com.by.taxi.lovetaxi.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.by.taxi.lovetaxi.javabean.MyUser;
+import com.by.taxi.lovetaxi.R;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;

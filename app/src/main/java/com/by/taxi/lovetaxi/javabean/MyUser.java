@@ -13,6 +13,16 @@ public class MyUser extends BmobUser {
     private BmobFile pic;
     private String sex;
     private String idcard;
+    private String taxi_id;
+
+    public String getTaxi_id() {
+        return taxi_id;
+    }
+
+    public void setTaxi_id(String taxi_id) {
+        this.taxi_id = taxi_id;
+    }
+
 
     public String getIdcard() {
         return idcard;

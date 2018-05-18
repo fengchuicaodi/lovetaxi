@@ -1,7 +1,8 @@
-package com.by.taxi.lovetaxi;
+package com.by.taxi.lovetaxi.activity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.location.Location;
@@ -14,42 +15,40 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.graphics.drawable.AnimationDrawable;
+
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.by.taxi.lovetaxi.R;
 import com.by.taxi.lovetaxi.javabean.MyUser;
-import com.by.taxi.lovetaxi.javabean.ordercar;
 import com.by.taxi.lovetaxi.javabean.passenger_location;
 
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.widget.Toast;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class MainActivity extends AppCompatActivity implements LocationSource, AMapLocationListener {
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ListView lvLeftMenu;
-    private String[] lvs = {"登录注册","个人信息", "提交预约", "查询订单", "附近的车","修改密码"};
+    private String[] lvs = {"登录注册","个人信息", "提交预约", "查询订单", "附近的车","修改密码","评价订单"};
     private ArrayAdapter arrayAdapter;
     private AnimationDrawable mAnimationDrawable;
-    private static boolean flag=true;
     //经纬度
-    private  double latitude;//经度
-    private  double longitude;//纬度
+    private  static double latitude;//经度
+    private  static double longitude;//纬度
+    private static String pObjectId;
 
 
     MapView mMapView = null;
@@ -68,13 +67,13 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        update();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bmob.initialize(this, "64a9582a1950cfc5eac1b65afb3b11e2");
         findViews(); //获取控件
-        if(flag==true){
-            update();
-        }
+
         toolbar.setTitle("Toolbar");//设置Toolbar标题
         toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
         setSupportActionBar(toolbar);
@@ -101,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i){
                     case 0:
+                        BmobUser bmobUser = BmobUser.getCurrentUser();
+                        bmobUser.logOut();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         break;
@@ -116,6 +117,9 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
                         Intent intent5 = new Intent(MainActivity.this, PasswordActivity.class);
                         startActivity(intent5);
                         break;
+                    case 6:
+                        Intent intent6 = new Intent(MainActivity.this, AssessActivity.class);
+                        startActivity(intent6);
                 }
             }
         });
@@ -132,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
 
         //蓝点初始化
         myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
-        myLocationStyle.interval(2000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
+        myLocationStyle.interval(10000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
         //aMap.getUiSettings().setMyLocationButtonEnabled(true);设置默认定位按钮是否显示，非必需设置。
         aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
@@ -140,10 +144,34 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
 
 
         myLocationStyle.showMyLocation(true);
+        aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                //从location对象中获取经纬度信息，地址描述信息，建议拿到位置之后调用逆地理编码接口获取
+                latitude=location.getLatitude();
+                longitude=location.getLongitude();
 
+                final MyUser use = BmobUser.getCurrentUser(MyUser.class);
+                SharedPreferences preferences=getSharedPreferences("puser", Context.MODE_PRIVATE);
+                String ObjectId=preferences.getString(use.getUsername(),"passenger");
+                passenger_location p =new passenger_location();
+                BmobGeoPoint point = new BmobGeoPoint(longitude, latitude);
+                p.setPl_location(point);
+                p.update(ObjectId.toString(), new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if(e==null){
+                            Log.i("bmob","更新成功");
+                        }else{
+                            Log.i("bmob","更新失败："+e.getMessage()+","+e.getErrorCode());
+                        }
+                    }
+                });
 
-
+            }
+        });
     }
+
 
 
     @Override
@@ -217,10 +245,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         if (mListener != null && aMapLocation != null) {
             if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
-                latitude=aMapLocation.getLatitude();
-                longitude=aMapLocation.getLongitude();
-                String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
-                Log.e("定位AmapErr", errText);
+
 
             } else {
                 String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
@@ -244,20 +269,34 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         lvLeftMenu = (ListView) findViewById(R.id.lv_left_menu);
     }
     private void update(){
-        MyUser user = BmobUser.getCurrentUser(MyUser.class);
-        passenger_location plocation=new passenger_location();
-        plocation.setPl_status(0);
-        plocation.setPassengername(user);
-        plocation.save(new SaveListener<String>() {
-            @Override
-            public void done(String objectId,BmobException e) {
-                if(e==null){
-                    Log.e("bmob","保存成功");
-                }else{
-                    Log.e("bmob","保存失败："+e.getMessage());
+        final MyUser user = BmobUser.getCurrentUser(MyUser.class);
+        SharedPreferences preference=getSharedPreferences("puser", Context.MODE_PRIVATE);
+        String Id=preference.getString(user.getUsername(),"null");
+        if(Id=="null")
+        {
+            final passenger_location plocation=new passenger_location();
+            SharedPreferences preferences=getSharedPreferences("puser",Context.MODE_PRIVATE);
+            final SharedPreferences.Editor editor=preferences.edit();
+            final String name =user.getUsername();
+            Log.e("asff",name);
+            plocation.setPl_status(0);
+            plocation.setPassengername(user);
+            plocation.save(new SaveListener<String>() {
+                @Override
+                public void done(String objectId,BmobException e) {
+                    if(e==null){
+                        Log.e("bmob","保存成功");
+                        pObjectId=plocation.getObjectId();
+                        Log.e("fsdf",pObjectId );
+                        editor.putString(name,pObjectId);
+                        editor.putString("afas","sdfss");
+                        editor.commit();//提交修改
+                    }else{
+                        Log.e("bmob","保存失败："+e.getMessage());
+                    }
                 }
-            }
-        });
-        flag=false;
+            });
+        }
+
     }
 }

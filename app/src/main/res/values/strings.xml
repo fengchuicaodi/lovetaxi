@@ -30,13 +30,7 @@
     <string name="end_location">目的地:</string>
     <string name="requst_order">提交订单</string>
     <string name="cancel">取消</string>
-    <string-array name="orderperoid1">
-        <item>明天</item>
-        <item>两天后</item>
-        <item>五天后</item>
-        <item>十天后</item>
-    </string-array>
-
+    <string name="no_result">对不起，没有搜索到相关数据！</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

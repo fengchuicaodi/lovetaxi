@@ -1,4 +1,4 @@
-package com.by.taxi.lovetaxi;
+package com.by.taxi.lovetaxi.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,17 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.by.taxi.lovetaxi.javabean.MyUser;
+import com.by.taxi.lovetaxi.R;
 
 import cn.bmob.sms.BmobSMS;
 import cn.bmob.sms.listener.RequestSMSCodeListener;
 import cn.bmob.sms.listener.VerifySMSCodeListener;
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.LogInListener;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 public class SmsActivity extends Activity implements View.OnClickListener {
     private EditText mnumber, prove;
@@ -95,6 +90,7 @@ public class SmsActivity extends Activity implements View.OnClickListener {
                 }
                 else {
                     Toast.makeText(SmsActivity.this, "验证码发送失败，请检查网络连接", Toast.LENGTH_SHORT).show();
+                    Log.e("messege",e.toString());
                 }
 
 
