@@ -31,6 +31,9 @@
     <string name="requst_order">提交订单</string>
     <string name="cancel">取消</string>
     <string name="no_result">对不起，没有搜索到相关数据！</string>
+
+    <string name="route_demo">路径规划</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

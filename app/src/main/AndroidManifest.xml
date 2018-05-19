@@ -60,7 +60,8 @@
         <activity android:name=".activity.OrderActivity" />
         <activity android:name=".activity.PasswordActivity" />
         <activity android:name=".activity.PoiKeywordSearchActivity" />
-        <activity android:name=".activity.AssessActivity"></activity>
+        <activity android:name=".activity.AssessActivity"/>
+        <activity android:name=".activity.DriveRouteDetailActivity"/>
     </application>
 
 </manifest>
