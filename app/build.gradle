@@ -3,14 +3,16 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-
+        aaptOptions.cruncherEnabled = false
+        aaptOptions.useNewCruncher = false
         applicationId "com.by.taxi.lovetaxi"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true }}
+        }
     buildTypes {
         release {
             minifyEnabled false
@@ -40,9 +42,20 @@ dependencies {
     compile 'cn.bmob.android:bmob-sms:1.0.1'
     //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
     compile 'cn.bmob.android:http-legacy:1.0'
+    //查询组件
+    compile files('libs/butterknife-7.0.1.jar')
+    compile files('libs/picasso-2.5.2.jar')
+    compile files('libs/fastjson-1.2.8.jar')
+    compile files('libs/logger-1.13.jar')
+    compile project(':swipeToLoadLayout')
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'cn.bmob.android:bmob-sdk:3.6.1'
     //时间组件
     compile 'com.github.codbking:PickTime:v1.0.1'
     testImplementation 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile('com.github.niorgai:StatusBarCompat:2.1.4', {

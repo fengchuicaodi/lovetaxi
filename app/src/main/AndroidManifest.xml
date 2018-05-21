@@ -31,6 +31,7 @@
     <!--用于申请调用A-GPS模块-->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <application
+        android:name=".utils.MyApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/lovetaxilogo"
@@ -63,6 +64,8 @@
         <activity android:name=".activity.PoiKeywordSearchActivity" />
         <activity android:name=".activity.AssessActivity"/>
         <activity android:name=".activity.DriveRouteDetailActivity"/>
+        <activity android:name=".activity.MerchandiseListActivity"/>
+
     </application>
 
 </manifest>

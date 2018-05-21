@@ -1,4 +1,4 @@
-include ':app', 'Search'
+include ':app', 'Search', ':swipeToLoadLayout'
 include ':AMapTripModule'
 project(":AMapTripModule").projectDir=new File("AMapTripModule路径")
 

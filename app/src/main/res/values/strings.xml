@@ -31,9 +31,15 @@
     <string name="requst_order">提交订单</string>
     <string name="cancel">取消</string>
     <string name="no_result">对不起，没有搜索到相关数据！</string>
-
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
     <string name="route_demo">路径规划</string>
-
+    <string name="str_merchandise_time">预约时间:%s</string>
+    <string name="str_merchandise_price">目的地<b>%1$s</b>    支付价格 :<b>¥%2$s</b></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/AMapTripModule路径" />
             <option value="$PROJECT_DIR$/Search" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/swipeToLoadLayout" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

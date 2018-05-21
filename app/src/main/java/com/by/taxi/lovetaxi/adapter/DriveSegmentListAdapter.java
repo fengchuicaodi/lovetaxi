@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amap.api.services.route.DriveStep;
-
 import com.by.taxi.lovetaxi.R;
 import com.by.taxi.lovetaxi.util.AMapUtil;
 

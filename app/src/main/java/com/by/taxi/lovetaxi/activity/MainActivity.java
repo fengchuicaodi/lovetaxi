@@ -145,8 +145,12 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                         Intent intent2 = new Intent(MainActivity.this, OrderActivity.class);
                         startActivityForResult(intent2, 2);
                         break;
+                    case 3:
+                        Intent intent3 = new Intent(MainActivity.this, MerchandiseListActivity.class);
+                        startActivity(intent3);
+                        break;
                     case 6:
-                        Intent intent5 = new Intent(MainActivity.this, PasswordActivity.class);
+                        Intent intent5  = new Intent(MainActivity.this, PasswordActivity.class);
                         startActivity(intent5);
                         break;
                     case 7:
