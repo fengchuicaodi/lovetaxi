@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/AMapTripModule路径" />
+            <option value="$PROJECT_DIR$/Search" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

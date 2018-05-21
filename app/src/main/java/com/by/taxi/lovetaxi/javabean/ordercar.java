@@ -12,13 +12,13 @@ import cn.bmob.v3.datatype.BmobDate;
 public class ordercar extends BmobObject {
     private String start_location;
     private String end_location;
-    private Integer status;
     private Integer order_id;
     private  MyUser passengername;
     private BmobDate order_time;
     private Integer assess_number;
     private String assess;
-
+    private Double pay;
+    private String OrderState;//订单的页面状态
     public Double getPay() {
         return pay;
     }
@@ -27,7 +27,7 @@ public class ordercar extends BmobObject {
         this.pay = pay;
     }
 
-    private Double pay;
+
     public String getOrderState() {
         return OrderState;
     }
@@ -36,7 +36,7 @@ public class ordercar extends BmobObject {
         OrderState = orderState;
     }
 
-    private String OrderState;//订单的页面状态
+
     public Integer getAssess_number() {
         return assess_number;
     }
