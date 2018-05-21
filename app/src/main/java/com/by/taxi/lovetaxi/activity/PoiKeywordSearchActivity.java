@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.by.taxi.lovetaxi.R;
@@ -23,6 +24,8 @@ import com.by.taxi.lovetaxi.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.os.Build.ID;
 
 /**
  * author           Alpha58
@@ -43,7 +46,10 @@ public class PoiKeywordSearchActivity extends AppCompatActivity implements PoiSe
     private int currentPage = 0;// 当前页面，从0开始计数
     private PoiSearch.Query query;// Poi查询条件类
     private PoiSearch poiSearch;// POI搜索
-
+    private Double lat;//纬度
+    private Double lon;//经度
+    private PoiSearch IDpoisearch;//PoiID查询
+    private int prCode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +105,9 @@ public class PoiKeywordSearchActivity extends AppCompatActivity implements PoiSe
         poiSearch = new PoiSearch(this, query);
         poiSearch.setOnPoiSearchListener(this);
         poiSearch.searchPOIAsyn();
+        IDpoisearch=new PoiSearch(this,null);
+        IDpoisearch.setOnPoiSearchListener(this);
+
     }
 
     private void initData() {
@@ -126,7 +135,6 @@ public class PoiKeywordSearchActivity extends AppCompatActivity implements PoiSe
                         LatLonPoint llp = item.getLatLonPoint();
                         double lon = llp.getLongitude();
                         double lat = llp.getLatitude();
-
                         String title = item.getTitle();
                         String text = item.getSnippet();
                         String provinceName = item.getProvinceName();
@@ -137,6 +145,7 @@ public class PoiKeywordSearchActivity extends AppCompatActivity implements PoiSe
                     }
                     PoiKeywordSearchAdapter adapter = new PoiKeywordSearchAdapter(PoiKeywordSearchActivity.this,data);
                     mRecyclerView.setAdapter(adapter);
+
                 }
             } else {
                 ToastUtil.show(PoiKeywordSearchActivity.this,
@@ -147,15 +156,18 @@ public class PoiKeywordSearchActivity extends AppCompatActivity implements PoiSe
         }
 
     }
-
     /**
      * POI信息查询回调方法
      */
     @Override
     public void onPoiItemSearched(PoiItem item, int rCode) {
         // TODO Auto-generated method stub
-
+        LatLonPoint p = item.getLatLonPoint();
+        Log.e("sfsfsfsfgrwerefasfsafasfsdf",String.valueOf(item.getLatLonPoint().getLatitude()));
+        lat =p.getLatitude();
+        lon=p.getLongitude();
     }
+
 
 
     /**
@@ -163,9 +175,13 @@ public class PoiKeywordSearchActivity extends AppCompatActivity implements PoiSe
      * @param detailAddress
      */
     public void setDetailAddress(String detailAddress) {
+
         mEt_keyword.setText(detailAddress);
+        Log.e("laasfsfas",String.valueOf(lat));
         Intent intent=new Intent();
         intent.putExtra("data",detailAddress);
+        intent.putExtra("latitude",lat);
+        intent.putExtra("longitude",lon);
         setResult(RESULT_OK,intent);
         finish();
     }

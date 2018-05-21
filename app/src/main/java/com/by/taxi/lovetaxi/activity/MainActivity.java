@@ -1,5 +1,6 @@
 package com.by.taxi.lovetaxi.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,9 +23,11 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ListView lvLeftMenu;
-    private String[] lvs = {"登录注册","个人信息", "提交预约", "查询订单", "附近的车","一键约车","开始导航","修改密码","评价订单"};
+    private String[] lvs = {"登录注册","个人信息", "提交预约", "查询订单", "附近的车","开始导航","修改密码","评价订单"};
     private ArrayAdapter arrayAdapter;
     private AnimationDrawable mAnimationDrawable;
     //经纬度
@@ -70,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
     private RouteSearch mRouteSearch;
     private String strStart;
     private String strEnd;
-    private LatLonPoint mStartPoint = new LatLonPoint(30.951615,118.760913);
-    private LatLonPoint mEndPoint = new LatLonPoint(30.940426,118.778938);
+    private static LatLonPoint mStartPoint = new LatLonPoint(30.951615,118.760913);
+    private static LatLonPoint mEndPoint = new LatLonPoint(30.940426,118.778938);
     private DriveRouteResult mDriveRouteResult;
     private Context mContext;
     private String mCurrentCityName = "北京";
@@ -86,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
 
     //初始化地图控制器对象
     AMap aMap;
-
 
     //定位需要的数据
     LocationSource.OnLocationChangedListener mListener;
@@ -103,7 +105,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
         setContentView(R.layout.activity_main);
         Bmob.initialize(this, "64a9582a1950cfc5eac1b65afb3b11e2");
         findViews(); //获取控件
-        toolbar.setTitle("Toolbar");//设置Toolbar标题
+
+        toolbar.setTitle("乘客端");//设置Toolbar标题
         toolbar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
@@ -140,13 +143,13 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                         break;
                     case 2:
                         Intent intent2 = new Intent(MainActivity.this, OrderActivity.class);
-                        startActivity(intent2);
+                        startActivityForResult(intent2, 2);
                         break;
-                    case 7:
+                    case 6:
                         Intent intent5 = new Intent(MainActivity.this, PasswordActivity.class);
                         startActivity(intent5);
                         break;
-                    case 8:
+                    case 7:
                         Intent intent6 = new Intent(MainActivity.this, AssessActivity.class);
                         startActivity(intent6);
                 }
@@ -208,6 +211,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
         mBottomLayout = (RelativeLayout) findViewById(R.id.bottom_layout);
         mRotueTimeDes = (TextView) findViewById(R.id.firstline);
         mRouteDetailDes = (TextView) findViewById(R.id.secondline);
+        UiSettings uiSettings = aMap.getUiSettings();
+        uiSettings.setZoomPosition(AMapOptions.ZOOM_POSITION_RIGHT_CENTER);
     }
     private void setfromandtoMarker() {
         aMap.addMarker(new MarkerOptions()

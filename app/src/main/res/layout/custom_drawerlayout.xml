@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!--主布局-->
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/maplaysout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,6 +14,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </com.amap.api.maps.MapView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tl_custom"
+
+            android:background="@drawable/title_background"
+            android:clickable="true"
+            android:drawableLeft="@drawable/route_drive_normal"
+            android:drawablePadding="6dp"
+            android:gravity="center"
+            android:onClick="onDriveClick"
+            android:padding="4dp"
+            android:text="规划路线"
+            android:visibility="visible" />
         <RelativeLayout
             android:id="@+id/bottom_layout"
             android:layout_width="match_parent"
@@ -71,7 +87,7 @@
             </LinearLayout>
         </RelativeLayout>
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <!--侧滑菜单-->
     <LinearLayout

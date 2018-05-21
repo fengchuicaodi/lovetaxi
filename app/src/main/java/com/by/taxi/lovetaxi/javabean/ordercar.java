@@ -18,6 +18,25 @@ public class ordercar extends BmobObject {
     private BmobDate order_time;
     private Integer assess_number;
     private String assess;
+
+    public Double getPay() {
+        return pay;
+    }
+
+    public void setPay(Double pay) {
+        this.pay = pay;
+    }
+
+    private Double pay;
+    public String getOrderState() {
+        return OrderState;
+    }
+
+    public void setOrderState(String orderState) {
+        OrderState = orderState;
+    }
+
+    private String OrderState;//订单的页面状态
     public Integer getAssess_number() {
         return assess_number;
     }
@@ -58,14 +77,6 @@ public class ordercar extends BmobObject {
 
     public void setEnd_location(String end_location) {
         this.end_location = end_location;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public Integer getOrder_id() {

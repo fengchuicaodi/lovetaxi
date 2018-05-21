@@ -15,7 +15,6 @@
         android:ellipsize="marquee"
         android:gravity="center"
         android:singleLine="true"
-        android:text="乘客端"
         android:textColor="#fff"
         android:textSize="21sp" />
 </android.support.v7.widget.Toolbar>

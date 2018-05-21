@@ -8,19 +8,7 @@
     <!--Toolbar-->
     <include layout="@layout/custom_toolbar" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/title_background"
-        android:clickable="true"
-        android:drawableLeft="@drawable/route_drive_normal"
-        android:drawablePadding="6dp"
-        android:gravity="center"
-        android:onClick="onDriveClick"
-        android:padding="4dp"
-        android:text="规划路线" />
+
     <include layout="@layout/custom_drawerlayout" />
 
 
